@@ -33,9 +33,25 @@ function mainGame(){
             var num2 = 208;
             var finalArray = arrProducer(fulltext,num1,num2);
             initializeSite(finalArray);
+            var newGeneration;
 
-            //var newGeneration = refreshPage(finalArray);
-            
+            var timer = 500;
+
+            setTimeout(function(){
+
+                newGeneration = refreshPage(finalArray);
+                
+            }, timer);
+        
+            for(i = 0; i<1000; i++){
+                timer += 500;
+                setTimeout(function(){
+
+                    newGeneration = refreshPage(newGeneration);
+                    
+                }, timer);
+            }
+           
         break;
 
         case 1920:
@@ -59,12 +75,12 @@ function initializeSite(arr){
             }else{
                 finalString += '\u2591';
             }
-    }
-    var tag = document.createElement("p");
-    var text = document.createTextNode(finalString);
-    tag.appendChild(text);
-    element.appendChild(tag);
-    finalString = "";
+        }
+        var tag = document.createElement("p");
+        var text = document.createTextNode(finalString);
+        tag.appendChild(text);
+        element.appendChild(tag);
+        finalString = "";
     }
 }
 
@@ -156,7 +172,7 @@ function twoDimArray(height,width){
 
 
 function refreshPage(arr){
-    var newGeneration = twoDimArray(arr.length, arr[0].length);
+    let newGeneration = twoDimArray(arr.length, arr[0].length);
     var bottom = arr.length-1;
     var right = arr[0].length-1;
 
@@ -239,7 +255,7 @@ function refreshPage(arr){
 
                     newGeneration[i][j] = testOfLife(decider,arr[i][j]);
                 }
-            }else if(i>0 && i<arr.length){
+            }else if(i>0 && i<arr.length-1){
                 if(j==0){
                     var decider = 0;
 
@@ -261,7 +277,7 @@ function refreshPage(arr){
                     decider += arr[i+1][j];
                     //botright
                     decider += arr[i+1][j+1];
-                    
+
                     newGeneration[i][j] = testOfLife(decider,arr[i][j]);
                 //special case top right    
                 }else if(j==arr[0].length-1){
@@ -406,18 +422,22 @@ function testOfLife(number,currentCell){
     
     if(currentCell == 1){
         //rule 1: each cell with one or no neighbors dies, as if by solitude.
-        if(number==0){
+        if(number<=1){
             return 0;
         //rule 2: each cell with four or more neighbors dies, as if by overpopulation.
         }else if(number>3){
             return 0;
+        //rule 3: each cell with two or three neighbors survives. 
         }else if(number>1 && number<4){
             return 1;
         }
     //space that is unpopulated, means a cell which has a 0    
     }else if(currentCell == 0){
-        if(number==3){
+        //rule 4: each cell with three neighbors becomes populated. 
+        if(number ==3){
             return 1;
+        }else{
+            return 0;
         }
     }
 }
