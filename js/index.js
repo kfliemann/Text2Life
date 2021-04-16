@@ -33,6 +33,9 @@ function mainGame(){
             var num2 = 208;
             var finalArray = arrProducer(fulltext,num1,num2);
             initializeSite(finalArray);
+
+            //var newGeneration = refreshPage(finalArray);
+            
         break;
 
         case 1920:
@@ -135,12 +138,13 @@ function variableThroughSites(){
     var element = document.getElementById("main");
     element.appendChild(tag);
 }
-//create an array of arrays
 
-// [0] [0,1,2,3,4 .. width]
-// [1] [0,1,2,3,4 .. width]
-// [height ] [0,1,2,3,4 .. width]
+//create an array of arrays
 function twoDimArray(height,width){
+    // [0] [0,1,2,3,4 .. width]
+    // [1] [0,1,2,3,4 .. width]
+    // [height ] [0,1,2,3,4 .. width]
+    
     //columns
     var x = new Array(height);
     //rows
@@ -148,4 +152,272 @@ function twoDimArray(height,width){
         x[i] = new Array(width);
     }
     return x;
+}
+
+
+function refreshPage(arr){
+    var newGeneration = twoDimArray(arr.length, arr[0].length);
+    var bottom = arr.length-1;
+    var right = arr[0].length-1;
+
+    //loop over all entities and check if the cell is alive or dead in next generation
+    for(i = 0; i<arr.length;i++){
+        for(j=0; j<arr[i].length;j++){
+            
+            //get surroundings, will use wraparound. cells on the top most border will look at last bottom row and cells at most left will look at most right and vice versa
+
+            //special case top border
+            if(i==0){
+                //special case top left
+                if(j==0){
+                    var decider = 0;
+                    //topleft
+                    decider += arr[bottom][right];
+                    //topmid
+                    decider += arr[bottom][j];
+                    //topright
+                    decider += arr[bottom][j+1];
+
+                    //midleft
+                    decider += arr[i][right];
+                    //midright
+                    decider += arr[i][j+1];
+
+                    //botleft
+                    decider += arr[i+1][right];
+                    //botmid
+                    decider += arr[i+1][j];
+                    //botright
+                    decider += arr[i+1][j+1];
+
+                    newGeneration[i][j] = testOfLife(decider,arr[i][j]);
+                //special case top right    
+                }else if(j==arr[0].length-1){
+                    var decider = 0;
+
+                    //topleft
+                    decider += arr[bottom][j-1];
+                    //topmid
+                    decider += arr[bottom][j];
+                    //topright
+                    decider += arr[bottom][0];
+
+                    //midleft
+                    decider += arr[i][j-1];
+                    //midright
+                    decider += arr[i][0];
+
+                    //botleft
+                    decider += arr[i+1][j-1];
+                    //botmid
+                    decider += arr[i+1][j];
+                    //botright
+                    decider += arr[i+1][0];
+
+                    newGeneration[i][j] = testOfLife(decider,arr[i][j]);
+                }else if(j>0 && j<arr[0].length){
+                    var decider = 0;
+
+                    //topleft
+                    decider += arr[bottom][j-1];
+                    //topmid
+                    decider += arr[bottom][j];
+                    //topright
+                    decider += arr[bottom][j+1];
+
+                    //midleft
+                    decider += arr[i][j-1];
+                    //midright
+                    decider += arr[i][j+1];
+
+                    //botleft
+                    decider += arr[i+1][j-1];
+                    //botmid
+                    decider += arr[i+1][j];
+                    //botright
+                    decider += arr[i+1][j+1];
+
+                    newGeneration[i][j] = testOfLife(decider,arr[i][j]);
+                }
+            }else if(i>0 && i<arr.length){
+                if(j==0){
+                    var decider = 0;
+
+                    //topleft
+                    decider += arr[i-1][right];
+                    //topmid
+                    decider += arr[i-1][j];
+                    //topright
+                    decider += arr[i-1][j+1];
+
+                    //midleft
+                    decider += arr[i][right];
+                    //midright
+                    decider += arr[i][j+1];
+
+                    //botleft
+                    decider += arr[i+1][right];
+                    //botmid
+                    decider += arr[i+1][j];
+                    //botright
+                    decider += arr[i+1][j+1];
+                    
+                    newGeneration[i][j] = testOfLife(decider,arr[i][j]);
+                //special case top right    
+                }else if(j==arr[0].length-1){
+                    var decider = 0;
+
+                    //topleft
+                    decider += arr[i-1][j-1];
+                    //topmid
+                    decider += arr[i-1][j];
+                    //topright
+                    decider += arr[i-1][0];
+
+                    //midleft
+                    decider += arr[i][j-1];
+                    //midright
+                    decider += arr[i][0];
+
+                    //botleft
+                    decider += arr[i+1][j-1];
+                    //botmid
+                    decider += arr[i+1][j];
+                    //botright
+                    decider += arr[i+1][0];
+
+                    newGeneration[i][j] = testOfLife(decider,arr[i][j]);
+                }else if(j>0 && j<arr[0].length){
+                    var decider = 0;
+                    
+                    //topleft
+                    decider += arr[i-1][j-1];
+                    //topmid
+                    decider += arr[i-1][j];
+                    //topright
+                    decider += arr[i-1][j+1];
+
+                    //midleft
+                    decider += arr[i][j-1];
+                    //midright
+                    decider += arr[i][j+1];
+
+                    //botleft
+                    decider += arr[i+1][j-1];
+                    //botmid
+                    decider += arr[i+1][j];
+                    //botright
+                    decider += arr[i+1][j+1];
+
+                    newGeneration[i][j] = testOfLife(decider,arr[i][j]);
+                }
+            }else if(i==arr.length-1){
+                if(j==0){
+                    var decider = 0;
+                    
+                    //topleft
+                    decider += arr[i-1][right];
+                    //topmid
+                    decider += arr[i-1][j];
+                    //topright
+                    decider += arr[i-1][j+1];
+
+                    //midleft
+                    decider += arr[i][right];
+                    //midright
+                    decider += arr[i][j+1];
+
+                    //botleft
+                    decider += arr[0][right];
+                    //botmid
+                    decider += arr[0][j];
+                    //botright
+                    decider += arr[0][j+1];
+                    newGeneration[i][j] = testOfLife(decider,arr[i][j]);
+                //special case top right    
+                }else if(j==arr[0].length-1){
+                    var decider = 0;
+
+                    //topleft
+                    decider += arr[i-1][j-1];
+                    //topmid
+                    decider += arr[i-1][j];
+                    //topright
+                    decider += arr[i-1][0];
+
+                    //midleft
+                    decider += arr[i][j-1];
+                    //midright
+                    decider += arr[i][0];
+
+                    //botleft
+                    decider += arr[0][j-1];
+                    //botmid
+                    decider += arr[0][j];
+                    //botright
+                    decider += arr[0][0];
+
+                    newGeneration[i][j] = testOfLife(decider,arr[i][j]);
+                }else if(j>0 && j<arr[0].length){
+                    var decider = 0;
+                    
+                    //topleft
+                    decider += arr[i-1][j-1];
+                    //topmid
+                    decider += arr[i-1][j];
+                    //topright
+                    decider += arr[i-1][j+1];
+
+                    //midleft
+                    decider += arr[i][j-1];
+                    //midright
+                    decider += arr[i][j+1];
+
+                    //botleft
+                    decider += arr[0][j-1];
+                    //botmid
+                    decider += arr[0][j];
+                    //botright
+                    decider += arr[0][j+1];
+                    
+                    newGeneration[i][j] = testOfLife(decider,arr[i][j]);
+                    
+                }
+            }
+        }
+    }
+
+    clearSite();
+    initializeSite(newGeneration);
+    return newGeneration;
+}
+
+function clearSite(){
+    var node= document.getElementById("main");
+    while (node.firstChild){
+        node.removeChild(node.firstChild);
+    }
+}
+
+function testOfLife(number,currentCell){
+    //RULES
+    //https://playgameoflife.com/info rules
+    //space that is populated, means a cell which has a 1
+    
+    if(currentCell == 1){
+        //rule 1: each cell with one or no neighbors dies, as if by solitude.
+        if(number==0){
+            return 0;
+        //rule 2: each cell with four or more neighbors dies, as if by overpopulation.
+        }else if(number>3){
+            return 0;
+        }else if(number>1 && number<4){
+            return 1;
+        }
+    //space that is unpopulated, means a cell which has a 0    
+    }else if(currentCell == 0){
+        if(number==3){
+            return 1;
+        }
+    }
 }
