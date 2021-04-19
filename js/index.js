@@ -1,6 +1,6 @@
 //create the alphabet buttons to decide which charakter should turn into life
 function addButtons(){
-    var letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+    var letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','RANDOM'];
     for(i=0; i<letters.length;i++){
         var button = document.createElement("input");         
         button.setAttribute("id", letters[i]);
@@ -36,9 +36,9 @@ function mainGame(){
             initializeSite(finalArray);
             
             var timer = 500;
-            
+
             //the next generations
-            for(i = 0; i<100000; i++){
+            for(i = 0; i<10000; i++){
                 setTimeout(function(){
                     finalArray = refreshPage(finalArray);
                 }, timer);
@@ -99,57 +99,57 @@ function arrProducer(text, height,width){
     var num3 = num1 * num2;
     var arrToFill = twoDimArray(height,width);
     if(text.length>num3){
-            alert("Text too big for application, try to shorten it");
-            //TODO
-    }else{
-        var countWidth = 0;
-        var countHeight = 0;
+        alert("Text was too big for application, it got reduced to screensize");
+        text = text.slice(0, num3);
+    }
+    var countWidth = 0;
+    var countHeight = 0;
 
-        //character conversion
-        for(i = 0; i<text.length; i++){
-            var character = text.substring(i, i+1);
-            if(character.toLowerCase() === sessionStorage.getItem("buttonChosen").toLowerCase()){
-                if(countWidth < width){
-                    arrToFill[countHeight][countWidth] = 1;
-                    countWidth += 1;
-                }else{
-                    countHeight += 1;
-                    countWidth = 0;
-                    arrToFill[countHeight][countWidth] = 1;
-                    countWidth += 1;
-                }
+    //character conversion
+    for(i = 0; i<text.length; i++){
+        var character = text.substring(i, i+1);
+        if(character.toLowerCase() === sessionStorage.getItem("buttonChosen").toLowerCase()){
+            if(countWidth < width){
+                arrToFill[countHeight][countWidth] = 1;
+                countWidth += 1;
             }else{
-                if(countWidth < width){
-                    arrToFill[countHeight][countWidth] = 0;
-                    countWidth += 1;
-                }else{
-                    countHeight += 1;
-                    countWidth = 0;
-                    arrToFill[countHeight][countWidth] = 0;
-                    countWidth += 1;
-                }
-            }
-
-        }
-
-        //if the text.length is shorter than the whole array of arrays space fill the rest of array with 0
-        if(arrToFill[countHeight].length != countWidth){
-            for(i = countWidth; i<arrToFill[countHeight].length; i++){
-                arrToFill[countHeight][i] = 0;
-            }
-            for(j = countHeight+1; j<arrToFill.length; j++){
-                for(k = 0; k < width; k++){
-                    arrToFill[j][k] = 0;
-                }
+                countHeight += 1;
+                countWidth = 0;
+                arrToFill[countHeight][countWidth] = 1;
+                countWidth += 1;
             }
         }else{
-            for(j = countHeight+1; j<arrToFill.length; j++){
-                for(k = 0; k < width; k++){
-                    arrToFill[j][k] = 0;
-                }
+            if(countWidth < width){
+                arrToFill[countHeight][countWidth] = 0;
+                countWidth += 1;
+            }else{
+                countHeight += 1;
+                countWidth = 0;
+                arrToFill[countHeight][countWidth] = 0;
+                countWidth += 1;
+            }
+        }
+
+    }
+
+    //if the text.length is shorter than the whole array of arrays space fill the rest of array with 0
+    if(arrToFill[countHeight].length != countWidth){
+        for(i = countWidth; i<arrToFill[countHeight].length; i++){
+            arrToFill[countHeight][i] = 0;
+        }
+        for(j = countHeight+1; j<arrToFill.length; j++){
+            for(k = 0; k < width; k++){
+                arrToFill[j][k] = 0;
+            }
+        }
+    }else{
+        for(j = countHeight+1; j<arrToFill.length; j++){
+            for(k = 0; k < width; k++){
+                arrToFill[j][k] = 0;
             }
         }
     }
+
     return arrToFill;
 }
 

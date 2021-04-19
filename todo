@@ -1,0 +1,6 @@
+show generation
+reset / new game 
+highscore ?
+slider to make the jump between generations faster or slower
+let the playfield scale with text based on resolution to keep screen ratio
+random button which inserts random text to let the player play around with random shapes
