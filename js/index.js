@@ -38,7 +38,7 @@ function mainGame(){
             var timer = 500;
             
             //the next generations
-            for(i = 0; i<1000; i++){
+            for(i = 0; i<100000; i++){
                 setTimeout(function(){
                     finalArray = refreshPage(finalArray);
                 }, timer);
@@ -47,7 +47,21 @@ function mainGame(){
         break;
 
         case 1920:
-            //TODO
+            var num1 = 59;
+            var num2 = 156;
+            var finalArray = arrProducer(fulltext,num1,num2);
+            //first instance of the cells
+            initializeSite(finalArray);
+            
+            var timer = 500;
+            
+            //the next generations
+            for(i = 0; i<100000; i++){
+                setTimeout(function(){
+                    finalArray = refreshPage(finalArray);
+                }, timer);
+                timer += 500;
+            }
         break;
 
         default:
