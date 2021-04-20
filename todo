@@ -1,19 +1,24 @@
 DONE
 -random button which inserts random text to let the player play around with random shapes
+-convert text to seed & let create by seed (for BIG SHAPES)
 
 TODO
 -pause when losing focus
 -share button (seed, link)
--convert text to seed & let create by seed
+-show seed if avaliable on site
 -show generation
 -reset / new game 
     ->reset button for random based on which random chosen
 -highscore ?
 -slider to make the jump between generations faster or slower
 -let the playfield scale with text based on resolution to keep screen ratio
+-convert text to seed & let create by seed (for SMALL SHAPES)
+    -encode by columns
 
 BUGS
 -page empty when hitting f5
+-insert generic string other than the specific seed format then pressing BY SEED breaks site
+-"Uncaught InternalError: allocation size overflow" happens when playing around with seeds and chose numbers too big which lets the string overflow
 
 
 
