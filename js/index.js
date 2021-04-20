@@ -1,6 +1,6 @@
 //create the alphabet buttons to decide which charakter should turn into life
 function addButtons(){
-    var letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','RANDOM'];
+    var letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','RANDOM SMALL SHAPE','RANDOM BIG SHAPE'];
     for(i=0; i<letters.length;i++){
         var button = document.createElement("input");         
         button.setAttribute("id", letters[i]);
@@ -98,8 +98,18 @@ function arrProducer(text, height,width){
     var num1 = width;
     var num3 = num1 * num2;
     var arrToFill = twoDimArray(height,width);
-    if(text.length>num3){
-        alert("Text was too big for application, it got reduced to screensize");
+    
+    var random = false;
+    //if user pressed the random button then change the text to a random text and set the button to A
+    if(sessionStorage.getItem("buttonChosen")=="RANDOM SMALL SHAPE" || sessionStorage.getItem("buttonChosen")=="RANDOM BIG SHAPE"){
+        text = produceRandomText(num3);
+        random = true;
+    }
+
+    if(text.length>num3 ){
+        if(random==false){
+            alert("Text was too big for application, it got reduced to screensize");
+        }
         text = text.slice(0, num3);
     }
     var countWidth = 0;
@@ -151,6 +161,47 @@ function arrProducer(text, height,width){
     }
 
     return arrToFill;
+}
+
+//produces a random string containing A's and B's which later translate to 1 & 0 
+function produceRandomText(textLength){
+    var randomText = "";
+    if(sessionStorage.getItem("buttonChosen")=="RANDOM SMALL SHAPE"){
+        sessionStorage.setItem("buttonChosen", "A");
+        for(i = 0; i<textLength; i++){
+            var test = Math.floor(Math.random() * 10); 
+            if(test>=8){
+                randomText += "A";
+            }else{
+                randomText += "B";
+            }
+        }
+        return randomText;
+    }else{
+        sessionStorage.setItem("buttonChosen", "A");
+        var subString = "";
+        for(i = 0; i<(Math.floor(Math.random() * 10)+7); i++){
+            var test = Math.floor(Math.random() * 10); 
+            if(test>=7){
+                subString += "A";
+            }else{
+                subString += "B";
+            }
+        }
+
+        while (randomText.length<textLength){
+            for(i = 0; i<(Math.floor(Math.random() * 3)+3); i++){
+                subString += subString;
+            }
+
+            if(subString.length >= textLength){
+                randomText = subString;
+            }
+        }
+        //save the text
+        sessionStorage.setItem("text", randomText);
+        return randomText;
+    }  
 }
 
 //create a 2D array (array of arrays)
