@@ -1,6 +1,6 @@
 //create the alphabet buttons to decide which charakter should turn into life
 function addButtons(){
-    var letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','RANDOM SMALL SHAPE','RANDOM BIG SHAPE'];
+    var letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','RANDOM SMALL SHAPE','RANDOM BIG SHAPE','BY SEED'];
     for(i=0; i<letters.length;i++){
         var button = document.createElement("input");         
         button.setAttribute("id", letters[i]);
@@ -98,12 +98,16 @@ function arrProducer(text, height,width){
     var num1 = width;
     var num3 = num1 * num2;
     var arrToFill = twoDimArray(height,width);
-    
     var random = false;
+
+    var textForSeed = "";
+
     //if user pressed the random button then change the text to a random text and set the button to A
     if(sessionStorage.getItem("buttonChosen")=="RANDOM SMALL SHAPE" || sessionStorage.getItem("buttonChosen")=="RANDOM BIG SHAPE"){
         text = produceRandomText(num3);
         random = true;
+    }else if(sessionStorage.getItem("buttonChosen")=="BY SEED"){
+        seedToText(sessionStorage.getItem("text"));
     }
 
     if(text.length>num3 ){
@@ -121,21 +125,25 @@ function arrProducer(text, height,width){
         if(character.toLowerCase() === sessionStorage.getItem("buttonChosen").toLowerCase()){
             if(countWidth < width){
                 arrToFill[countHeight][countWidth] = 1;
+                textForSeed += 1;
                 countWidth += 1;
             }else{
                 countHeight += 1;
                 countWidth = 0;
                 arrToFill[countHeight][countWidth] = 1;
+                textForSeed += 1;
                 countWidth += 1;
             }
         }else{
             if(countWidth < width){
                 arrToFill[countHeight][countWidth] = 0;
+                textForSeed += 0;
                 countWidth += 1;
             }else{
                 countHeight += 1;
                 countWidth = 0;
                 arrToFill[countHeight][countWidth] = 0;
+                textForSeed += 0;
                 countWidth += 1;
             }
         }
@@ -146,26 +154,30 @@ function arrProducer(text, height,width){
     if(arrToFill[countHeight].length != countWidth){
         for(i = countWidth; i<arrToFill[countHeight].length; i++){
             arrToFill[countHeight][i] = 0;
+            textForSeed += 0;
         }
         for(j = countHeight+1; j<arrToFill.length; j++){
             for(k = 0; k < width; k++){
                 arrToFill[j][k] = 0;
+                textForSeed += 0;
             }
         }
     }else{
         for(j = countHeight+1; j<arrToFill.length; j++){
             for(k = 0; k < width; k++){
                 arrToFill[j][k] = 0;
+                textForSeed += 0;
             }
         }
     }
-
+    textToSeed(textForSeed);
     return arrToFill;
 }
 
 //produces a random string containing A's and B's which later translate to 1 & 0 
 function produceRandomText(textLength){
     var randomText = "";
+    //make smaller shapes and scatter them on the field
     if(sessionStorage.getItem("buttonChosen")=="RANDOM SMALL SHAPE"){
         sessionStorage.setItem("buttonChosen", "A");
         for(i = 0; i<textLength; i++){
@@ -176,8 +188,12 @@ function produceRandomText(textLength){
                 randomText += "B";
             }
         }
+        //save the text so it can be read in console
+        sessionStorage.setItem("text", randomText);
+
         return randomText;
     }else{
+        //make bigger shapes by copy pasting bigger text chunks them more often
         sessionStorage.setItem("buttonChosen", "A");
         var subString = "";
         for(i = 0; i<(Math.floor(Math.random() * 10)+7); i++){
@@ -188,21 +204,49 @@ function produceRandomText(textLength){
                 subString += "B";
             }
         }
-
+        sessionStorage.setItem("subText", subString);
+        var seedArr = new Array();
+        var counter = 0;
         while (randomText.length<textLength){
-            for(i = 0; i<(Math.floor(Math.random() * 3)+3); i++){
+            seedArr[counter] = (Math.floor(Math.random() * 3)+3);
+            for(i = 0; i<seedArr[counter]; i++){
                 subString += subString;
             }
 
             if(subString.length >= textLength){
                 randomText = subString;
             }
+            counter++;
         }
-        //save the text
         sessionStorage.setItem("text", randomText);
+        sessionStorage.setItem("seedArr", seedArr);
         return randomText;
     }  
 }
+
+function produceSeededText(textLength,seedString, seedArray){
+    var randomText = "";
+    //make smaller shapes and scatter them on the field
+    //make bigger shapes by copy pasting bigger text chunks them more often
+    sessionStorage.setItem("buttonChosen", "A");
+    var subString = seedString;
+    var seedArr = seedArray;
+    var counter = 0;
+    while (randomText.length<textLength){
+        for(i = 0; i<seedArr[counter]; i++){
+            subString += subString;
+        }
+
+        if(subString.length >= textLength){
+            randomText = subString;
+        }
+        counter++;
+    }
+    sessionStorage.setItem("text", randomText);
+    sessionStorage.setItem("seedArr", seedArr);
+    return randomText;
+    }  
+
 
 //create a 2D array (array of arrays)
 function twoDimArray(height,width){
@@ -502,6 +546,33 @@ function testOfLife(number,currentCell){
         }
     }
 }
+
+//create a seed for big shapes to share with friends
+function textToSeed(input){
+    var seed = "";
+    //save the screen resolution
+    seed = seed + screen.width + "X" + screen.height;
+    //save the initial string
+    seed += "X" + sessionStorage.getItem("subText");
+    //save the times it got copy and pasted
+    console.log(sessionStorage.getItem("seedArr"));
+    for(i = 0; i<sessionStorage.getItem("seedArr").length;i++){
+        if(sessionStorage.getItem("seedArr")[i]!=","){
+            seed += "X" + sessionStorage.getItem("seedArr")[i];
+        }
+    }
+    //output the final seed, for now in console
+    //TODO output on site 
+    console.log(seed);
+}
+
+//reconstruction of seed to text
+function seedToText(seed){
+    var width = parseInt(seed.slice(0,4));
+    var height = parseInt(seed.slice(5,9));
+    console.log("width: " + width + "height: " + height);
+}
+
 
 //for testing purposes
 function variableThroughSites(){

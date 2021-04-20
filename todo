@@ -2,6 +2,8 @@ DONE
 -random button which inserts random text to let the player play around with random shapes
 
 TODO
+-pause when losing focus
+-share button (seed, link)
 -convert text to seed & let create by seed
 -show generation
 -reset / new game 
