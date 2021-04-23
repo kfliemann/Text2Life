@@ -80,7 +80,9 @@ function arrProducer(text, height,width){
 
     //if user pressed the random button then change the text to a random text and set the button to A
     if(sessionStorage.getItem("buttonChosen")=="RANDOM SMALL SHAPE" || sessionStorage.getItem("buttonChosen")=="RANDOM BIG SHAPE"){
-        text = produceRandomText(num3);
+        while(checkEmpty(text)!=false){
+            text = produceRandomText(num3);
+        }
         random = true;
     }else if(sessionStorage.getItem("buttonChosen")=="BY SEED"){
         text = seedToText(sessionStorage.getItem("text"),num3);
@@ -192,8 +194,9 @@ function produceRandomText(textLength){
         randomText = randomText.slice(0,textLength);
         textToSeed(textLength,seedString,seedArr);
         return randomText;
+        }
+
     }  
-}
 
 //create a seed for big shapes to share with friends
 //seed format: converted width*sizeXseed textXnumbersXofXcopy paste repititions
@@ -582,4 +585,21 @@ function variableThroughSites(){
     tag.appendChild(text);
     var element = document.getElementById("main");
     element.appendChild(tag);
+}
+
+//check if the array created by randomness is empty return true false
+function checkEmpty(array){
+    var sum = 0;
+    for(i = 0; i<array.length; i++){
+        for(j = 0; j<array[i].length;j++){
+            if(array[i][j] == "A"){
+                sum += 1;
+            }
+        }
+    }
+    if(sum == 0){
+        return true;
+    }else{
+        return false;
+    }
 }
