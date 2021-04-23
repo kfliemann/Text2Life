@@ -2,6 +2,10 @@ DONE
 -random button which inserts random text to let the player play around with random shapes
 -convert text to seed & let create by seed (for BIG SHAPES)
 
+FIXED BUGS
+-RANDOM BIG SHAPES sometimes presented blank site in first gen, when the start seed was containing only B'scale
+    ->now checks, if site is blank, if so: produce new seed
+
 TODO
 -pause when losing focus
 -share button (seed, link)
