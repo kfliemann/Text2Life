@@ -81,7 +81,7 @@ function arrProducer(text, height,width){
     //if user pressed the random button then change the text to a random text and set the button to A
     if(sessionStorage.getItem("buttonChosen")=="RANDOM SMALL SHAPE" || sessionStorage.getItem("buttonChosen")=="RANDOM BIG SHAPE"){
         while(checkEmpty(text)!=false){
-            text = produceRandomText(num3);
+            text = produceRandomText(num3,height,width);
         }
         random = true;
     }else if(sessionStorage.getItem("buttonChosen")=="BY SEED"){
@@ -146,27 +146,31 @@ function arrProducer(text, height,width){
 }
 
 //produces a random string containing A's and B's which later translate to 1 & 0 
-function produceRandomText(textLength){
+function produceRandomText(textLength,height, width){
     var randomText = "";
+    var seedArr = new Array();
     //make smaller shapes and scatter them on the field
     if(sessionStorage.getItem("buttonChosen")=="RANDOM SMALL SHAPE"){
         sessionStorage.setItem("buttonChosen", "A");
-        for(i = 0; i<textLength; i++){
+            for(i = 0; i<textLength; i++){
             var test = Math.floor(Math.random() * 10); 
             if(test>=8){
                 randomText += "A";
+                seedArr[i] = 1;
             }else{
                 randomText += "B";
+                seedArr[i] = 0;
             }
         }
         //save the text so it can be read in console
         sessionStorage.setItem("text", randomText);
-
+        textToSeed(textLength, randomText, seedArr, "SMALL")
         return randomText;
     }else{
         //make bigger shapes by copy pasting bigger text chunks them more often
         sessionStorage.setItem("buttonChosen", "A");
         var subString = "";
+        var seedArr = new Array();
         for(i = 0; i<(Math.floor(Math.random() * 10)+7); i++){
             var test = Math.floor(Math.random() * 10); 
             if(test>=7){
@@ -176,7 +180,7 @@ function produceRandomText(textLength){
             }
         }
         var seedString = subString;
-        var seedArr = new Array();
+        
         var counter = 0;
         while (randomText.length<textLength){
             seedArr[counter] = (Math.floor(Math.random() * 3)+3);
@@ -193,72 +197,135 @@ function produceRandomText(textLength){
         sessionStorage.setItem("seedArr", seedArr);
         randomText = randomText.slice(0,textLength);
         if(checkEmpty(randomText)==false){
-            textToSeed(textLength,seedString,seedArr);
+            textToSeed(textLength,seedString,seedArr,"BIG");
         }
-
-        
         return randomText;
         }
 
-    }  
+}  
 
 //create a seed for big shapes to share with friends
 //seed format: converted width*sizeXseed textXnumbersXofXcopy paste repititions
-function textToSeed(size, seedText, seedArr){
+function textToSeed(size, seedText, seedArr, type){
     var seed = "";
     //save the screen resolution
     seed = seed + size;
-    //save the initial string
-    seed += "X" + seedText;
-    //save the times it got copy and pasted
-    for(i = 0; i<seedArr.length;i++){
-        if(seedArr[i]!=","){
-            seed += "X" + seedArr[i];
-        }
+    
+    if(type == "BIG"){
+        //save the seedtype
+        seed += "X" + 0;
+        //save the initial string
+        seed += "X" + seedText;
+        //save the times it got copy and pasted
+        for(i = 0; i<seedArr.length;i++){
+            if(seedArr[i]!=","){
+                seed += "X" + seedArr[i];
+            }
+        } 
+        //output the final seed, for now in console
+        //TODO output on site 
+        console.log(seed);
+    }else if(type == "SMALL"){
+        //save the seedtype
+        seed += "X" + 1;
+        
+        //max size 52 for now, which preserves every bit
+        var size = 52;
+
+        //convert a size long string into a number which then can be decoded as binary number
+        var stringg = "";
+        for(i = 0; i<seedArr.length; i+=size){
+            var sum = 0;
+            var arrCopy = new Array();
+            for(j = 0; j<size; j++){
+                arrCopy[j]=seedArr[i+j];
+                stringg += seedArr[i+j];
+                if(arrCopy[j]==1){
+                    sum += Math.pow(2,j);
+                }
+            }
+            seed += "X" + sum;
+        }  
+
+        //output the final seed, for now in console
+        //TODO output on site 
+        console.log(seed);
     }
-    //output the final seed, for now in console
-    //TODO output on site 
-    console.log(seed);
 }
 
 //reconstruction of seed to text
 function seedToText(seed){
     var splitSeed = seed.split("X");
+
     var size = splitSeed[0];
-    var seedText = splitSeed[1];
     var seedArr = new Array();
-    var index = 0;
-    for(i = 2; i<splitSeed.length; i++){
-        seedArr[index] = splitSeed[i];
-        index++;
+    if(splitSeed[1]==0){
+        var seedText = splitSeed[2];
+        var index = 0;
+        for(i = 3; i<splitSeed.length; i++){
+            seedArr[index] = splitSeed[i];
+            index++;
+        }
+
+        var finalArray = produceSeededText(size,seedText,seedArr,splitSeed[1]);
+        finalArray = finalArray.slice(0,size);
+        return finalArray;
+    }else if(splitSeed[1]==1){
+        sessionStorage.setItem("buttonChosen", "A");
+        finalText = "";
+        for(i = 2; i<splitSeed.length;i++){
+            var decider = false;
+            var number = splitSeed[i];
+            var counter = 0;
+            while(number > 0){
+                if(number%2 ==1){
+                    finalText += "A";
+                }else{
+                    finalText += "B";
+                }
+                number = Math.floor(number/2);
+                counter += 1;
+            }
+
+            if(counter<52){
+                var remaining = 52-counter;
+                for(j = 0; j<remaining; j++){
+                    finalText += "B";
+                }
+            }
+        }
+
+        finalText = finalText.slice(0,size);
+        return finalText;
     }
-    var finalArray = produceSeededText(size,seedText,seedArr);
-    finalArray = finalArray.slice(0,size);
-    return finalArray;
+    
 }
 
 //reconstruct the text from seed
-function produceSeededText(textLength,seedString, seedArray){
-    var randomText = "";
-    sessionStorage.setItem("buttonChosen", "A");
-    var subString = seedString;
-    var seedArr = seedArray;
-    var counter = 0;
-    while (randomText.length<textLength){
-        for(i = 0; i<seedArr[counter]; i++){
-            subString += subString;
-        }
+function produceSeededText(textLength,seedString, seedArray,type){
+    if(type==0){
+        var randomText = "";
+        sessionStorage.setItem("buttonChosen", "A");
+        var subString = seedString;
+        var seedArr = seedArray;
+        var counter = 0;
+        while (randomText.length<textLength){
+            for(i = 0; i<seedArr[counter]; i++){
+                subString += subString;
+            }
 
-        if(subString.length >= textLength){
-            randomText = subString;
+            if(subString.length >= textLength){
+                randomText = subString;
+            }
+            counter++;
+            if(counter==seedArr.length){   
+                randomText=subString;
+                break;
+            }
         }
-        counter++;
-        if(counter==seedArr.length){   
-            randomText=subString;
-            break;
-        }
+        return randomText;
     }
-    return randomText;
+    
 }  
 
 //representation of the text in life form
@@ -589,6 +656,15 @@ function variableThroughSites(){
     tag.appendChild(text);
     var element = document.getElementById("main");
     element.appendChild(tag);
+
+    //for other testing purposes
+    /*var help="";
+        for(i=0;i<12273;i++){
+            if(12272%i==0){
+                help += i + "X";
+            }
+        }
+    console.log(help);*/
 }
 
 //check if the array created by randomness is empty return true false

@@ -1,6 +1,7 @@
 DONE
 -random button which inserts random text to let the player play around with random shapes
 -convert text to seed & let create by seed (for BIG SHAPES)
+-convert text to seed & let create by seed (for SMALL SHAPES)
 
 FIXED BUGS
 -RANDOM BIG SHAPES sometimes presented blank site in first gen, when the start seed was containing only B'scale
@@ -16,8 +17,8 @@ TODO
 -highscore ?
 -slider to make the jump between generations faster or slower
 -let the playfield scale with text based on resolution to keep screen ratio
--convert text to seed & let create by seed (for SMALL SHAPES)
-    -encode by columns
+-shorten the seed produced for small shapes (maybe using the following library:"https://github.com/MikeMcl/bignumber.js)
+
 
 BUGS
 -page empty when hitting f5
