@@ -80,7 +80,6 @@ function arrProducer(text, height,width){
 
     //if user pressed the random button then change the text to a random text and set the button to A
     if(sessionStorage.getItem("buttonChosen")=="RANDOM SMALL SHAPE" || sessionStorage.getItem("buttonChosen")=="RANDOM BIG SHAPE"){
-        console.log(checkEmpty(text));
         while(checkEmpty(text)!=false){
             text = produceRandomText(num3);
         }
