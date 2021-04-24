@@ -44,7 +44,7 @@ function mainGame(){
     
     switch (width) {
         case 2560:
-            var num1 = 59;
+            var num1 = 57;
             var num2 = 208;
             var finalArray = arrProducer(fulltext,num1,num2);
             //first instance of the cells
@@ -52,13 +52,24 @@ function mainGame(){
             
             var timer = 500;
 
-            //the next generations
-            for(i = 0; i<10000; i++){
-                setTimeout(function(){
-                    finalArray = refreshPage(finalArray);
+            interval = null;
+            var startBTN = document.getElementById("start");
+            var stopBTN = document.getElementById("stop");
+            
+            //looks ugly but works
+            //https://stackoverflow.com/questions/29173956/start-and-stop-loop-in-javascript-with-start-and-stop-button/29174952
+             
+            
+            startBTN.onclick = function () {
+                interval = setInterval(function () {
+                    finalArray = refreshPage(finalArray);  // this is inside your loop
                 }, timer);
-                timer += 500;
-            }
+            };
+
+            stopBTN.onclick = function () {
+                clearInterval(interval);
+            };
+            
         break;
 
         case 1920:
