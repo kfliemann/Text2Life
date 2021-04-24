@@ -1,9 +1,24 @@
 //create the alphabet buttons to decide which charakter should turn into life
 function addButtons(){
     var letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','RANDOM SMALL SHAPE','RANDOM BIG SHAPE','BY SEED'];
+    var placed = false;
     for(i=0; i<letters.length;i++){
         var button = document.createElement("input");         
         button.setAttribute("id", letters[i]);
+        if(i<26){
+            button.setAttribute("class", "letter");
+        }else{
+            if(placed==false){
+                var par = document.createElement("p");
+                var node = document.createTextNode("Press these to get a glimpse of the default game, a version with fancier shapes or a preseeded game.");
+                par.appendChild(node);
+                par.setAttribute("id", "lucky");
+                var form = document.getElementById("buttonForm");
+                form.appendChild(par);
+                placed=true;
+            }
+            button.setAttribute("class", "random");
+        }
         button.setAttribute("type", "submit");
         button.setAttribute("value", letters[i]);
         button.onclick = function() {storeButtonChosen(this.value)};
@@ -77,7 +92,7 @@ function arrProducer(text, height,width){
     var num3 = num1 * num2;
     var arrToFill = twoDimArray(height,width);
     var random = false;
-
+    
     //if user pressed the random button then change the text to a random text and set the button to A
     if(sessionStorage.getItem("buttonChosen")=="RANDOM SMALL SHAPE" || sessionStorage.getItem("buttonChosen")=="RANDOM BIG SHAPE"){
         while(checkEmpty(text)!=false){
@@ -85,8 +100,13 @@ function arrProducer(text, height,width){
         }
         random = true;
     }else if(sessionStorage.getItem("buttonChosen")=="BY SEED"){
-        text = seedToText(sessionStorage.getItem("text"),num3);
-        random = true;
+        if(text.length !=0){
+            text = seedToText(sessionStorage.getItem("text"),num3);
+            random = true;
+        }else{
+            alert("Seed was empty!"); 
+        }
+        
     }
 
     if(text.length>num3 ){

@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Text 2 Life</title>
+        <title>Text of Life</title>
+        <link rel="icon" type="image/png" href="/favicon.ico"/>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type = "text/javascript" src = "js/index.js"></script>
         <link href="../resources/css/reset.css" type="text/css" rel="stylesheet">
+        <link href="../resources/css/index.css" type="text/css" rel="stylesheet">
+        
+
     </head>
     <body>
-        <h1>Conways Text of Life</h1>
-        <h2>Bring life into your boring text with this application</h2>
-
+        
+        <h1 class="h1">Conways Text of Life</h1>
+        <h2 class="h2">Bring your text to life using the rules of <a class="a"target="_blank" href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Rules">Conways Game of Life</a><h2>
         <div class="menu">
             <div>
-                <p>Insert your text into the input field below and choose a letter which should turn alive</p>
-                <div id="buttonlist">
+                <p id="description">Insert your text into the input field below and choose a letter which should turn alive or try a seeded game by inputting a seed and pressing "By Seed"</p>
+                <div class="form-group" id="buttonlist">
                     <form id="buttonForm" action="html/mainsite.html" method="get">
-                        <input type="text" id="textfield" class="textfield" placeholder="Insert your text here">
-                        <script>addButtons()</script>
+                        <textarea type="textarea" id="textfield" class="textfield" placeholder="Insert your text/seed here"></textarea>
                     </form>
+                </div>
+                <div class="form-group">
+                    <script>addButtons()</script>   
                 </div>
             </div>
         </div>
