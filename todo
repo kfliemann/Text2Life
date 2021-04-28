@@ -3,23 +3,24 @@ DONE
 -convert text to seed & let create by seed (for BIG SHAPES)
 -convert text to seed & let create by seed (for SMALL SHAPES)
 -index.html styled up a little bit
+-show generation
+-slider to make the jump between generations faster or slower
 
-FIXED BUGS
--RANDOM BIG SHAPES sometimes presented blank site in first gen, when the start seed was containing only B'scale
-    ->now checks, if site is blank, if so: produce new seed
 
 TODO
 -pause when losing focus
 -share button (seed, link)
 -show seed if avaliable on site
--show generation
 -reset / new game 
     ->reset button for random based on which random chosen
 -highscore ?
--slider to make the jump between generations faster or slower
 -let the playfield scale with text based on resolution to keep screen ratio
 -shorten the seed produced for small shapes (maybe using the following library:"https://github.com/MikeMcl/bignumber.js)
 
+
+FIXED BUGS
+-RANDOM BIG SHAPES sometimes presented blank site in first gen, when the start seed was containing only B'scale
+    ->now checks, if site is blank, if so: produce new seed
 
 BUGS
 -page empty when hitting f5
