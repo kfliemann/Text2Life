@@ -50,44 +50,69 @@ function mainGame(){
             //first instance of the cells
             initializeSite(finalArray);
             
-            var timer = 500;
-
             interval = null;
             var startBTN = document.getElementById("start");
             var stopBTN = document.getElementById("stop");
+            var slider = document.getElementById("rangeSlider");
+            var timer = slider.value;
+            
+            //looks ugly but works
+            //https://stackoverflow.com/questions/29173956/start-and-stop-loop-in-javascript-with-start-and-stop-button/29174952
+            
+            //starts the game
+            startBTN.onclick = function () {
+                interval = setInterval(function () {
+                    finalArray = refreshPage(finalArray);  // this is inside your loop  
+                }, timer);
+            };
+
+            //pauses the game
+            stopBTN.onclick = function () {
+                clearInterval(interval);
+            };
+
+            //lets you change the speed in which generations evolve
+            slider.oninput = function () {
+                clearInterval(interval);
+                timer = slider.value;
+                startBTN.click();
+            }   
+        break;
+
+        case 1920:
+            var num1 = 57;
+            var num2 = 156;
+            var finalArray = arrProducer(fulltext,num1,num2);
+            //first instance of the cells
+            initializeSite(finalArray);
+            
+            interval = null;
+            var startBTN = document.getElementById("start");
+            var stopBTN = document.getElementById("stop");
+            var slider = document.getElementById("rangeSlider");
+            var timer = slider.value;
             
             //looks ugly but works
             //https://stackoverflow.com/questions/29173956/start-and-stop-loop-in-javascript-with-start-and-stop-button/29174952
              
-            
+            //starts the game
             startBTN.onclick = function () {
                 interval = setInterval(function () {
                     finalArray = refreshPage(finalArray);  // this is inside your loop
                 }, timer);
             };
 
+            //pauses the game
             stopBTN.onclick = function () {
                 clearInterval(interval);
             };
-            
-        break;
 
-        case 1920:
-            var num1 = 59;
-            var num2 = 156;
-            var finalArray = arrProducer(fulltext,num1,num2);
-            //first instance of the cells
-            initializeSite(finalArray);
-            
-            var timer = 500;
-            
-            //the next generations
-            for(i = 0; i<100000; i++){
-                setTimeout(function(){
-                    finalArray = refreshPage(finalArray);
-                }, timer);
-                timer += 500;
-            }
+            //lets you change the speed in which generations evolve
+            slider.oninput = function () {
+                clearInterval(interval);
+                timer = slider.value;
+                startBTN.click();
+            } 
         break;
 
         default:
