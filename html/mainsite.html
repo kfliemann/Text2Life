@@ -6,12 +6,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type = "text/javascript" src = "/js/index.js"></script>
         <link href="../resources/css/reset.css" type="text/css" rel="stylesheet">
+        <link href="../resources/css/mainsite.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-        <!--<p>dummy text</p>--> 
-        <button class="startBTN" id="start">start</button>
-        <button class="stopBTN" id="stop">stop</button>
-        <input type="range" min="1" max="1000" value="500" class="slider" id="rangeSlider">
+        <div class="navbar">
+                <button class="startBTN" id="start">start</button>
+                <button class="stopBTN" id="stop">stop</button>
+                <input type="range" min="1" max="1000" value="500" class="slider" id="rangeSlider">
+                <span class ="generation" id="generation"></span>   
+        </div>
         <div id="main">
             <script>mainGame()</script>     
         </div>

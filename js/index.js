@@ -49,23 +49,35 @@ function mainGame(){
             var finalArray = arrProducer(fulltext,num1,num2);
             //first instance of the cells
             initializeSite(finalArray);
-            
+
             interval = null;
             var startBTN = document.getElementById("start");
             var stopBTN = document.getElementById("stop");
             var slider = document.getElementById("rangeSlider");
             var timer = slider.value;
             
+            //generationcounter
+            var generationCount = 1;
+            var generation = document.getElementById("generation");
+            var generationNodeText = document.createTextNode("Generation: ");
+            var generationNodeCount = document.createTextNode(generationCount);
+            generation.append(generationNodeText);
+            generation.append(generationNodeCount);
+
+
             //looks ugly but works
             //https://stackoverflow.com/questions/29173956/start-and-stop-loop-in-javascript-with-start-and-stop-button/29174952
             
             //starts the game
             startBTN.onclick = function () {
                 interval = setInterval(function () {
-                    finalArray = refreshPage(finalArray);  // this is inside your loop  
+                    finalArray = refreshPage(finalArray);  // this is inside your loop
+                    generationCount += 1;
+                    generation.removeChild(generation.childNodes[1]);
+                    generationNodeCount = document.createTextNode(generationCount);
+                    generation.append(generationNodeCount);
                 }, timer);
             };
-
             //pauses the game
             stopBTN.onclick = function () {
                 clearInterval(interval);
@@ -76,7 +88,7 @@ function mainGame(){
                 clearInterval(interval);
                 timer = slider.value;
                 startBTN.click();
-            }   
+            }  
         break;
 
         case 1920:
@@ -85,23 +97,35 @@ function mainGame(){
             var finalArray = arrProducer(fulltext,num1,num2);
             //first instance of the cells
             initializeSite(finalArray);
-            
+
             interval = null;
             var startBTN = document.getElementById("start");
             var stopBTN = document.getElementById("stop");
             var slider = document.getElementById("rangeSlider");
             var timer = slider.value;
             
+            //generationcounter
+            var generationCount = 1;
+            var generation = document.getElementById("generation");
+            var generationNodeText = document.createTextNode("Generation: ");
+            var generationNodeCount = document.createTextNode(generationCount);
+            generation.append(generationNodeText);
+            generation.append(generationNodeCount);
+
+
             //looks ugly but works
             //https://stackoverflow.com/questions/29173956/start-and-stop-loop-in-javascript-with-start-and-stop-button/29174952
-             
+            
             //starts the game
             startBTN.onclick = function () {
                 interval = setInterval(function () {
                     finalArray = refreshPage(finalArray);  // this is inside your loop
+                    generationCount += 1;
+                    generation.removeChild(generation.childNodes[1]);
+                    generationNodeCount = document.createTextNode(generationCount);
+                    generation.append(generationNodeCount);
                 }, timer);
             };
-
             //pauses the game
             stopBTN.onclick = function () {
                 clearInterval(interval);
@@ -112,7 +136,7 @@ function mainGame(){
                 clearInterval(interval);
                 timer = slider.value;
                 startBTN.click();
-            } 
+            }    
         break;
 
         default:
