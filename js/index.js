@@ -169,9 +169,10 @@ function arrProducer(text, height,width){
     var num3 = num1 * num2;
     var arrToFill = twoDimArray(height,width);
     var random = false;
-    
+    console.log
     //if user pressed the random button then change the text to a random text and set the button to A
     if(sessionStorage.getItem("buttonChosen")=="RANDOM SMALL SHAPE" || sessionStorage.getItem("buttonChosen")=="RANDOM BIG SHAPE"){
+        sessionStorage.removeItem("text");
         while(checkEmpty(text)!=false){
             text = produceRandomText(num3,height,width);
         }

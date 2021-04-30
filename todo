@@ -22,11 +22,14 @@ TODO
 FIXED BUGS
 -RANDOM BIG SHAPES sometimes presented blank site in first gen, when the start seed was containing only B'scale
     ->now checks, if site is blank, if so: produce new seed
+-unwanted behaviour when textfield has input and any random button is pressed
+    ->clear textfield before displaying the site for corresponding random button
+
 
 BUGS
 -page empty when hitting f5
 -insert generic string other than the specific seed format then pressing BY SEED breaks site
 -"Uncaught InternalError: allocation size overflow" happens when playing around with seeds and chose numbers too big which lets the string overflow
 -pressing start button more than once makes the game go faster and breaks the stop button for some reason
--unwanted behaviour when textfield has input and any random button is pressed
+
 
