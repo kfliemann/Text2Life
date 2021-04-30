@@ -2,4 +2,19 @@ body{
     background-color:rgb(212, 230, 212);
 }
 
+.new-game{
+    margin-right: 1%;
+}
+.startBTN{
+    margin-right: 1%;
+}
+.stopBTN{
+    margin-right: 1%;
+}
+.slider{
+    margin-right: 1%;
+}
+.generation{
+    margin-right: 1%;
+}
 

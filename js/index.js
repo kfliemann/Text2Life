@@ -64,6 +64,15 @@ function mainGame(){
             generation.append(generationNodeText);
             generation.append(generationNodeCount);
 
+            //display the seed for big shapes, because its short
+            if(sessionStorage.getItem("seedButton")=="RANDOM BIG SHAPE"){
+                var seed = document.getElementById("seed");
+                var seedNodeText = document.createTextNode("Seed: ");
+                var seedCode = document.createTextNode(sessionStorage.getItem("seed"));
+                seed.append(seedNodeText);
+                seed.append(seedCode);
+            }
+            
 
             //looks ugly but works
             //https://stackoverflow.com/questions/29173956/start-and-stop-loop-in-javascript-with-start-and-stop-button/29174952
@@ -84,7 +93,7 @@ function mainGame(){
             };
 
             //lets you change the speed in which generations evolve
-            slider.oninput = function () {
+            slider.onchange = function () {
                 clearInterval(interval);
                 timer = slider.value;
                 startBTN.click();
@@ -112,7 +121,15 @@ function mainGame(){
             generation.append(generationNodeText);
             generation.append(generationNodeCount);
 
-
+            //display the seed for big shapes, because its short
+            if(sessionStorage.getItem("seedButton")=="RANDOM BIG SHAPE"){
+                var seed = document.getElementById("seed");
+                var seedNodeText = document.createTextNode("Seed: ");
+                var seedCode = document.createTextNode(sessionStorage.getItem("seed"));
+                seed.append(seedNodeText);
+                seed.append(seedCode);
+            }
+            
             //looks ugly but works
             //https://stackoverflow.com/questions/29173956/start-and-stop-loop-in-javascript-with-start-and-stop-button/29174952
             
@@ -132,7 +149,7 @@ function mainGame(){
             };
 
             //lets you change the speed in which generations evolve
-            slider.oninput = function () {
+            slider.onchange = function () {
                 clearInterval(interval);
                 timer = slider.value;
                 startBTN.click();
@@ -231,6 +248,7 @@ function produceRandomText(textLength,height, width){
     var seedArr = new Array();
     //make smaller shapes and scatter them on the field
     if(sessionStorage.getItem("buttonChosen")=="RANDOM SMALL SHAPE"){
+        sessionStorage.setItem("seedButton","RANDOM SMALL SHAPE");
         sessionStorage.setItem("buttonChosen", "A");
             for(i = 0; i<textLength; i++){
             var test = Math.floor(Math.random() * 10); 
@@ -248,6 +266,7 @@ function produceRandomText(textLength,height, width){
         return randomText;
     }else{
         //make bigger shapes by copy pasting bigger text chunks them more often
+        sessionStorage.setItem("seedButton","RANDOM BIG SHAPE");
         sessionStorage.setItem("buttonChosen", "A");
         var subString = "";
         var seedArr = new Array();
@@ -302,9 +321,8 @@ function textToSeed(size, seedText, seedArr, type){
                 seed += "X" + seedArr[i];
             }
         } 
-        //output the final seed, for now in console
-        //TODO output on site 
-        console.log(seed);
+        //output the final seed
+        sessionStorage.setItem("seed",seed);
     }else if(type == "SMALL"){
         //save the seedtype
         seed += "X" + 1;
