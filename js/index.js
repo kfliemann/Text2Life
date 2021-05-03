@@ -79,6 +79,7 @@ function mainGame(){
                 var seedCode = document.createTextNode(sessionStorage.getItem("seed"));
                 seed.append(seedNodeText);
                 seed.append(seedCode);
+                sessionStorage.setItem("seedButton","");
             }
             
 
@@ -256,6 +257,7 @@ function arrProducer(text, height,width){
             }
         }
     }
+    //sessionStorage.setItem("seedButton","");
     return arrToFill;
 }
 
@@ -381,9 +383,9 @@ function seedToText(seed){
             seedArr[index] = splitSeed[i];
             index++;
         }
-
+        
         var finalArray = produceSeededText(size,seedText,seedArr,splitSeed[1]);
-        finalArray = finalArray.slice(0,size);
+        //finalArray = finalArray.slice(0,size);
         return finalArray;
     }else if(splitSeed[1]==1){
         sessionStorage.setItem("buttonChosen", "A");
@@ -412,6 +414,9 @@ function seedToText(seed){
 
         finalText = finalText.slice(0,size);
         return finalText;
+    }else{
+        alert("Seed not reconstructable. Try another seed.")
+        window.location.href = "/index.html";
     }
     
 }
@@ -424,23 +429,29 @@ function produceSeededText(textLength,seedString, seedArray,type){
         var subString = seedString;
         var seedArr = seedArray;
         var counter = 0;
-        while (randomText.length<textLength){
-            for(i = 0; i<seedArr[counter]; i++){
-                subString += subString;
-            }
+        try{
+            while (randomText.length<textLength){
+                for(i = 0; i<seedArr[counter]; i++){
+                    subString += subString;
+                }
 
-            if(subString.length >= textLength){
-                randomText = subString;
+                if(subString.length >= textLength){
+                    randomText = subString;
+                }
+                counter++;
+                if(counter==seedArr.length){   
+                    randomText=subString;
+                    break;
+                }
             }
-            counter++;
-            if(counter==seedArr.length){   
-                randomText=subString;
-                break;
-            }
+            return randomText;
         }
-        return randomText;
+        catch(e){
+            alert("Seed might be corrupted, try another one.");
+            window.location.href = "/index.html";
+        }
     }
-    
+    return randomText;
 }  
 
 //representation of the text in life form
