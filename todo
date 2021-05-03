@@ -7,14 +7,11 @@ DONE
 -slider to make the jump between generations faster or slower
 -new game button
 -show seed for big shapes
+-let the playfield scale with text based on resolution to keep screen ratio
 
 TODO
 -pause when losing focus
 -share button (seed, link)
--reset 
-    ->reset button for random based on which random chosen
--highscore ?
--let the playfield scale with text based on resolution to keep screen ratio
 -shorten the seed produced for small shapes (maybe using the following library:"https://github.com/MikeMcl/bignumber.js)
     -if shorten works: -show small shapes seed
 
@@ -23,11 +20,10 @@ FIXED BUGS
 -RANDOM BIG SHAPES sometimes presented blank site in first gen, when the start seed was containing only B'scale
     ->now checks, if site is blank, if so: produce new seed
 -unwanted behaviour when textfield has input and any random button is pressed
-    ->clear textfield before displaying the site for corresponding random button
-
-
-BUGS
+    ->clear text variable passed in by method before displaying the site for corresponding random button
 -page empty when hitting f5
+    ->somehow got fixed by accident, i guess?
+BUGS
 -insert generic string other than the specific seed format then pressing BY SEED breaks site
 -"Uncaught InternalError: allocation size overflow" happens when playing around with seeds and chose numbers too big which lets the string overflow
 -pressing start button more than once makes the game go faster and breaks the stop button for some reason

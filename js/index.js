@@ -40,12 +40,20 @@ function storeButtonChosen(input){
 function mainGame(){
     var fulltext = sessionStorage.getItem("text");
     var width = screen.width;
-    var height = screen.height;
     
     switch (width) {
         case 2560:
             var num1 = 57;
             var num2 = 208;
+
+            //let the field scale with text but preserve displayratio
+            if(fulltext.length > num1*num2){
+                while(fulltext.length > num1*num2){
+                    num1 += 1;
+                    num2 += 1;
+                }
+            }
+
             var finalArray = arrProducer(fulltext,num1,num2);
             //first instance of the cells
             initializeSite(finalArray);
@@ -103,6 +111,15 @@ function mainGame(){
         case 1920:
             var num1 = 57;
             var num2 = 156;
+            
+            //let the field scale with text but preserve displayratio
+            if(fulltext.length > num1*num2){
+                while(fulltext.length > num1*num2){
+                    num1 += 1;
+                    num2 += 1;
+                }
+            }
+            
             var finalArray = arrProducer(fulltext,num1,num2);
             //first instance of the cells
             initializeSite(finalArray);
@@ -164,22 +181,20 @@ function mainGame(){
 //turn the text to an array of arrays, where information is stored
 //selected charakter turns to 1, all other to 0
 function arrProducer(text, height,width){
-    var num2 = height;
-    var num1 = width;
-    var num3 = num1 * num2;
+    var fieldSize = width * height;
     var arrToFill = twoDimArray(height,width);
     var random = false;
-    console.log
+    
     //if user pressed the random button then change the text to a random text and set the button to A
     if(sessionStorage.getItem("buttonChosen")=="RANDOM SMALL SHAPE" || sessionStorage.getItem("buttonChosen")=="RANDOM BIG SHAPE"){
-        sessionStorage.removeItem("text");
+        text = "";
         while(checkEmpty(text)!=false){
-            text = produceRandomText(num3,height,width);
+            text = produceRandomText(fieldSize,height,width);
         }
         random = true;
     }else if(sessionStorage.getItem("buttonChosen")=="BY SEED"){
         if(text.length !=0){
-            text = seedToText(sessionStorage.getItem("text"),num3);
+            text = seedToText(sessionStorage.getItem("text"),fieldSize);
             random = true;
         }else{
             alert("Seed was empty!"); 
@@ -187,11 +202,12 @@ function arrProducer(text, height,width){
         
     }
 
-    if(text.length>num3 ){
+    //obsolete code, because of functionality which lets playfield scale but leave it in, because it doesnt hurt 
+    if(text.length>fieldSize ){
         if(random==false){
             alert("Text was too big for application, it got reduced to screensize");
         }
-        text = text.slice(0, num3);
+        text = text.slice(0, fieldSize);
     }
     var countWidth = 0;
     var countHeight = 0;
