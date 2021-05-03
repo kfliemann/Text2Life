@@ -45,121 +45,71 @@ function mainGame(){
         case 2560:
             var num1 = 57;
             var num2 = 208;
-
-            //let the field scale with text but preserve displayratio
-            if(fulltext.length > num1*num2){
-                while(fulltext.length > num1*num2){
-                    num1 += 1;
-                    num2 += 1;
-                }
-            }
-
-            var finalArray = arrProducer(fulltext,num1,num2);
-            //first instance of the cells
-            initializeSite(finalArray);
-
-            interval = null;
-            var startBTN = document.getElementById("start");
-            var stopBTN = document.getElementById("stop");
-            var slider = document.getElementById("rangeSlider");
-            var timer = slider.value;
-            
-            //generationcounter
-            var generationCount = 1;
-            var generation = document.getElementById("generation");
-            var generationNodeText = document.createTextNode("Generation: ");
-            var generationNodeCount = document.createTextNode(generationCount);
-            generation.append(generationNodeText);
-            generation.append(generationNodeCount);
-
-            //display the seed for big shapes, because its short
-            if(sessionStorage.getItem("seedButton")=="RANDOM BIG SHAPE"){
-                var seed = document.getElementById("seed");
-                var seedNodeText = document.createTextNode("Seed: ");
-                var seedCode = document.createTextNode(sessionStorage.getItem("seed"));
-                seed.append(seedNodeText);
-                seed.append(seedCode);
-                sessionStorage.setItem("seedButton","");
-            }
-            
-
-            //looks ugly but works
-            //https://stackoverflow.com/questions/29173956/start-and-stop-loop-in-javascript-with-start-and-stop-button/29174952
-            
-            //starts the game
-            var lock = false;
-            startBTN.onclick = function () {
-                if(lock == false){
-                    interval = setInterval(function () {
-                        finalArray = refreshPage(finalArray);  // this is inside your loop
-                        generationCount += 1;
-                        generation.removeChild(generation.childNodes[1]);
-                        generationNodeCount = document.createTextNode(generationCount);
-                        generation.append(generationNodeCount);
-                    }, timer);
-                  lock=true;
-                }
-            };
-            //pauses the game
-            stopBTN.onclick = function () {
-                clearInterval(interval);
-                lock = false;
-            };
-
-            //lets you change the speed in which generations evolve
-            slider.onchange = function () {
-                clearInterval(interval);
-                timer = slider.value;
-                lock = false;
-                startBTN.click();
-            }  
+            gameLoop(fulltext,num1,num2);  
         break;
 
         case 1920:
             var num1 = 57;
             var num2 = 156;
-            
-            //let the field scale with text but preserve displayratio
-            if(fulltext.length > num1*num2){
-                while(fulltext.length > num1*num2){
-                    num1 += 1;
-                    num2 += 1;
-                }
-            }
-            
-            var finalArray = arrProducer(fulltext,num1,num2);
-            //first instance of the cells
-            initializeSite(finalArray);
+            gameLoop(fulltext,num1,num2);
+        break;
 
-            interval = null;
-            var startBTN = document.getElementById("start");
-            var stopBTN = document.getElementById("stop");
-            var slider = document.getElementById("rangeSlider");
-            var timer = slider.value;
-            
-            //generationcounter
-            var generationCount = 1;
-            var generation = document.getElementById("generation");
-            var generationNodeText = document.createTextNode("Generation: ");
-            var generationNodeCount = document.createTextNode(generationCount);
-            generation.append(generationNodeText);
-            generation.append(generationNodeCount);
+        case 1600:
+            var num1 = 46;
+            var num2 = 130;
+            gameLoop(fulltext,num1,num2);
+        break;
 
-            //display the seed for big shapes, because its short
-            if(sessionStorage.getItem("seedButton")=="RANDOM BIG SHAPE"){
-                var seed = document.getElementById("seed");
-                var seedNodeText = document.createTextNode("Seed: ");
-                var seedCode = document.createTextNode(sessionStorage.getItem("seed"));
-                seed.append(seedNodeText);
-                seed.append(seedCode);
-                sessionStorage.setItem("seedButton","");
+        default:
+            alert("Unexpected Screensize");
+    }
+}
+
+
+function gameLoop(fulltext,num1,num2){
+        //let the field scale with text but preserve displayratio
+        if(fulltext.length > num1*num2){
+            while(fulltext.length > num1*num2){
+                num1 += 1;
+                num2 += 1;
             }
-            
-            //looks ugly but works
-            //https://stackoverflow.com/questions/29173956/start-and-stop-loop-in-javascript-with-start-and-stop-button/29174952
-            
-            //starts the game
-            startBTN.onclick = function () {
+        }
+
+        var finalArray = arrProducer(fulltext,num1,num2);
+        //first instance of the cells
+        initializeSite(finalArray);
+
+        interval = null;
+        var startBTN = document.getElementById("start");
+        var stopBTN = document.getElementById("stop");
+        var slider = document.getElementById("rangeSlider");
+        var timer = slider.value;
+        
+        //generationcounter
+        var generationCount = 1;
+        var generation = document.getElementById("generation");
+        var generationNodeText = document.createTextNode("Generation: ");
+        var generationNodeCount = document.createTextNode(generationCount);
+        generation.append(generationNodeText);
+        generation.append(generationNodeCount);
+
+        //display the seed for big shapes, because its short
+        if(sessionStorage.getItem("seedButton")=="RANDOM BIG SHAPE"){
+            var seed = document.getElementById("seed");
+            var seedNodeText = document.createTextNode("Seed: ");
+            var seedCode = document.createTextNode(sessionStorage.getItem("seed"));
+            seed.append(seedNodeText);
+            seed.append(seedCode);
+            sessionStorage.setItem("seedButton","");
+        }
+        
+        //looks ugly but works
+        //https://stackoverflow.com/questions/29173956/start-and-stop-loop-in-javascript-with-start-and-stop-button/29174952
+        
+        //starts the game
+        var lock = false;
+        startBTN.onclick = function () {
+            if(lock == false){
                 interval = setInterval(function () {
                     finalArray = refreshPage(finalArray);  // this is inside your loop
                     generationCount += 1;
@@ -167,25 +117,23 @@ function mainGame(){
                     generationNodeCount = document.createTextNode(generationCount);
                     generation.append(generationNodeCount);
                 }, timer);
-            };
-            //pauses the game
-            stopBTN.onclick = function () {
-                clearInterval(interval);
-            };
+                lock=true;
+            }
+        };
+        //pauses the game
+        stopBTN.onclick = function () {
+            clearInterval(interval);
+            lock = false;
+        };
 
-            //lets you change the speed in which generations evolve
-            slider.onchange = function () {
-                clearInterval(interval);
-                timer = slider.value;
-                startBTN.click();
-            }    
-        break;
-
-        default:
-        alert("Unexpected Screensize");
-    }
+        //lets you change the speed in which generations evolve
+        slider.onchange = function () {
+            clearInterval(interval);
+            timer = slider.value;
+            lock = false;
+            startBTN.click();
+        }
 }
-
 //turn the text to an array of arrays, where information is stored
 //selected charakter turns to 1, all other to 0
 function arrProducer(text, height,width){
