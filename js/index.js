@@ -87,24 +87,30 @@ function mainGame(){
             //https://stackoverflow.com/questions/29173956/start-and-stop-loop-in-javascript-with-start-and-stop-button/29174952
             
             //starts the game
+            var lock = false;
             startBTN.onclick = function () {
-                interval = setInterval(function () {
-                    finalArray = refreshPage(finalArray);  // this is inside your loop
-                    generationCount += 1;
-                    generation.removeChild(generation.childNodes[1]);
-                    generationNodeCount = document.createTextNode(generationCount);
-                    generation.append(generationNodeCount);
-                }, timer);
+                if(lock == false){
+                    interval = setInterval(function () {
+                        finalArray = refreshPage(finalArray);  // this is inside your loop
+                        generationCount += 1;
+                        generation.removeChild(generation.childNodes[1]);
+                        generationNodeCount = document.createTextNode(generationCount);
+                        generation.append(generationNodeCount);
+                    }, timer);
+                  lock=true;
+                }
             };
             //pauses the game
             stopBTN.onclick = function () {
                 clearInterval(interval);
+                lock = false;
             };
 
             //lets you change the speed in which generations evolve
             slider.onchange = function () {
                 clearInterval(interval);
                 timer = slider.value;
+                lock = false;
                 startBTN.click();
             }  
         break;
@@ -146,6 +152,7 @@ function mainGame(){
                 var seedCode = document.createTextNode(sessionStorage.getItem("seed"));
                 seed.append(seedNodeText);
                 seed.append(seedCode);
+                sessionStorage.setItem("seedButton","");
             }
             
             //looks ugly but works
@@ -257,7 +264,6 @@ function arrProducer(text, height,width){
             }
         }
     }
-    //sessionStorage.setItem("seedButton","");
     return arrToFill;
 }
 
@@ -385,7 +391,7 @@ function seedToText(seed){
         }
         
         var finalArray = produceSeededText(size,seedText,seedArr,splitSeed[1]);
-        //finalArray = finalArray.slice(0,size);
+        finalArray = finalArray.slice(0,size);
         return finalArray;
     }else if(splitSeed[1]==1){
         sessionStorage.setItem("buttonChosen", "A");

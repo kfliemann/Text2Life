@@ -27,8 +27,10 @@ FIXED BUGS
     ->try catch around text reconstruction prevents string variable from overflowing and redirects user to index after displaying error
 -insert generic string other than the specific seed format then pressing BY SEED breaks site
     ->if the seedpattern doesnt match display error and redirect to index. you still CAN break it if you REALLY want to, but not as easy anymore
+-pressing start button more than once makes the game go faster and breaks the stop button for some reason
+    ->start button can only pressed again after stop was pressed / slider was used, binary "semaphore"
 
 BUGS
--pressing start button more than once makes the game go faster and breaks the stop button for some reason
+-currently no known bugs
 
 
